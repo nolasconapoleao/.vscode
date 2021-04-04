@@ -9,17 +9,17 @@
             "windows": {
                 "command": [
                     "bash -c \"",
-                        " mkdir -p build/debug",
-                        " && cd ./build/debug",
-                        " && cmake -DCMAKE_BUILD_TYPE=Debug ../..",
+                        "mkdir -p build/debug",
+                        "&& cd ./build/debug",
+                        "&& cmake -DCMAKE_BUILD_TYPE=Debug ../..",
                     "\""
                 ]
             },
             "linux": {
                 "command": [
-                    " mkdir -p build/debug",
-                    " && cd ./build/debug",
-                    " && cmake -DCMAKE_BUILD_TYPE=Debug ../..",
+                    "mkdir -p build/debug",
+                    "&& cd ./build/debug",
+                    "&& cmake -DCMAKE_BUILD_TYPE=Debug ../..",
                 ]
             },
             "group": {
@@ -31,21 +31,21 @@
 
         {
             // ###########################
-            // ####### Make #######
+            // ####### Make all #######
             "label": "Make all",
             "type": "shell",
             "windows": {
                 "command": [
                     "bash -c \"",
                         "cd ./build/debug",
-                        " && make all",
+                        "&& make all -j",
                      "\""
                 ]
             },
             "linux": {
                 "command": [
                     "cd ./build/debug",
-                    " && make all",
+                    "&& make all -j",
                 ]
             },
             "dependsOn":["Cmake"]
@@ -54,21 +54,21 @@
 
         {
             // ###########################
-            // ####### Run #######
+            // ####### Run tests #######
             "label": "Run tests",
             "type": "shell",
             "windows": {
                 "command": [
                     "bash -c \"",
                         "cd ./build/debug",
-                        " && make test",
+                        "&& make test -j",
                     "\""
                 ]
             },
             "linux": {
                 "command": [
                     "cd ./build/debug",
-                    " && make test",
+                    "&& make test -j",
                 ]
             },
             "dependsOn":["Make all"]
@@ -85,9 +85,9 @@
                     "cd ${fileDirname}",
                     "&& bash -c \"",
                         "if [[ ${fileExtname} =~ .(c|cpp|h|cc)$ ]]; then",
-                        "   clang-format -i ${fileBasename};",
+                        "  clang-format -i ${fileBasename};",
                         "elif [[ ${fileBasename} =~ (CMakeLists.txt|.cmake) ]]; then",
-                        "   cmake-format -i ${fileBasename};",
+                        "  cmake-format -i ${fileBasename};",
                         "fi",
                     "\"",
                 ]
@@ -95,12 +95,12 @@
             "linux": {
                 "command": [
                     "if [[ ${file} =~ .(c|cpp|h|cc)$ ]]; then;",
-                    "   clang-format -i ${file};",
+                    "  clang-format -i ${file};",
                     "elif [[ ${file} =~ (CMakeLists.txt|.cmake) ]]; then;",
-                    "   cmake-format -i ${file};",
+                    "  cmake-format -i ${file};",
                     "fi"
                 ]
-            },
+            }
         },
 
 
@@ -113,23 +113,20 @@
                 "command": [
                     "bash -c \"",
                         "mkdir -p build/debug++",
-                        " && cd ./build/debug++",
-                        " && cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_DIAGNOSTIC_TOOLS=ON ../..",
-                        " && make all",
+                        "&& cd ./build/debug++",
+                        "&& cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_DIAGNOSTIC_TOOLS=ON ../..",
+                        "&& make all -j > output.log 2>&1",
                     "\""
                 ]
             },
             "linux": {
                 "command": [
                     "mkdir -p build/debug++",
-                    " && cd ./build/debug++",
-                    " && cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_DIAGNOSTIC_TOOLS=ON ../..",
-                    " && make all",
+                    "&& cd ./build/debug++",
+                    "&& cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_DIAGNOSTIC_TOOLS=ON ../..",
+                    "&& make all -j > output.log 2>&1 ",
                 ]
-            },
-            "command": [
-                
-            ]
+            }
         },
 
 
@@ -142,25 +139,22 @@
                 "command": [
                     "bash -c \"",
                         "cd ./build/debug",
-                        " && make Coverage",
+                        "&& make Coverage -j",
                     "\"",
-                    " && start brave \"${workspaceFolder}/build/coverage/index.html"
+                    "&& start brave \"${workspaceFolder}/build/coverage/index.html"
                 ]
             },
             "linux": {
                 "command": [
                     "cd ./build/debug",
-                    " && make Coverage",
-                    " && brave ${workspaceFolder}/build/coverage/index.html"
+                    "&& make Coverage -j",
+                    "&& brave ${workspaceFolder}/build/coverage/index.html"
                 ]
             },
-            "command": [
-                
-            ],
             "dependsOn":["Cmake"]
         },
 
-        
+
         {
             // ###########################
             // ####### Documentation #######
@@ -170,16 +164,16 @@
                 "command": [
                     "bash -c \"",
                         "cd ./build/debug",
-                        " && make Documentation",
+                        "&& make Documentation -j",
                     "\"",
-                    " && start brave \"${workspaceFolder}/build/docs/html/index.html\""
+                    "&& start brave \"${workspaceFolder}/build/docs/html/index.html\""
                 ]
             },
             "linux": {
                 "command": [
                     "cd ./build/debug",
-                    " && make Documentation",
-                    " && brave ${workspaceFolder}/build/docs/html/index.html"
+                    "&& make Documentation -j",
+                    "&& brave ${workspaceFolder}/build/docs/html/index.html"
                 ]
             },
             "dependsOn":["Cmake"]
@@ -189,28 +183,28 @@
         {
             // ###########################
             // ####### Execute #######
-            "label": "Execute program",
+            "label": "Execute",
             "type": "shell",
             "windows": {
                 "command": [
                     "bash -c \"",
                         "mkdir -p build/release",
-                        " && cd ./build/release",
-                        " && cmake -DCMAKE_BUILD_TYPE=Release ../..",
-                        " && make Console-Game",
-                        " && ./Console-Game",
+                        "&& cd ./build/release",
+                        "&& cmake -DCMAKE_BUILD_TYPE=Release ../..",
+                        "&& make ${config:ProjectName} -j",
+                        "&& ./${config:ProjectName}",
                     "\""
                 ]
             },
             "linux": {
                 "command": [
                     "mkdir -p build/release",
-                    " && cd ./build/release",
-                    " && cmake -DCMAKE_BUILD_TYPE=Release ../..",
-                    " && make Console-Game",
-                    " && ./Console-Game",
+                    "&& cd ./build/release",
+                    "&& cmake -DCMAKE_BUILD_TYPE=Release ../..",
+                    "&& make ${config:ProjectName} -j",
+                    "&& ./${config:ProjectName}",
                 ]
-            },
-        },
+            }
+        }
     ]
 }

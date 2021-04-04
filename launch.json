@@ -5,10 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(gdb) Launch Game",
+            "name": "(gdb) Launch Executable",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/debug/Console-Game",
+            "program": "${workspaceFolder}/build/debug/${config:ProjectName}",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
